@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, 
@@ -8,33 +9,29 @@ const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight, false);
 document.body.appendChild( renderer.domElement );
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial( { color: 0xE30B5C } );
-const material_line = new THREE.LineBasicMaterial( { color: 0x0000ff });
+const texture = new 
+THREE.TextureLoader().load('image/fuselage_albd.png');
 
-const points = [];
-points.push( new THREE.Vector3( -1, 0, 0 ));
-points.push( new THREE.Vector3( 0 , 1, 0 ));
-points.push( new THREE.Vector3( 1, 0, 0 ));
-points.push( new THREE.Vector3( 0, -1, 0 ));
-points.push( new THREE.Vector3( -1, 0, 0 ));
+const material = new THREE.MeshBasicMaterial( {map:texture} );
 
-const geometry_line = new THREE.BufferGeometry().setFromPoints(points);
-
-const line = new THREE.Line(geometry_line, material_line );
-
-const cube = new THREE.Mesh( geometry, material );
-scene.add(cube);
-scene.add(line);
+const loader = new GLTFLoader();
+loader.load( 'models/cessna-cj4-06.glb', 
+    function ( gltf ) {
+        scene.add( gltf.scene );
+    }, undefined, function ( error ) {
+        console.log( error );
+});
 
 renderer.setClearColor( 0xffffff );
-camera.position.z = 5;
+camera.position.z = 10;
+camera.position.y = 5;
+camera.position.x = 6;
+
+camera.rotateY(.7);
+camera.rotateX(-.3);
 
 function animate() {
     requestAnimationFrame( animate );
-
-    cube.rotation.z += 0.01;
-	cube.rotation.y += 0.01;
 
     renderer.render(scene, camera);
 }

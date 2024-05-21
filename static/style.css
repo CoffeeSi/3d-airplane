@@ -1,4 +1,18 @@
+body {
+    margin: 0;
+}
+
 .image {
     text-align: center;
     justify-content: center;
+}
+
+.text {
+    text-align: center;
+    top: 10%;
+    display: block;
+    width: 100%;
+    position: absolute;
+    font-size: 72px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
