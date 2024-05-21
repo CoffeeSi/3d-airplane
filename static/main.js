@@ -20,17 +20,14 @@ function onProgress( xhr ) {
     if ( xhr.lengthComputable ) {
 
         const percentComplete = xhr.loaded / xhr.total * 100;
-        console.log( 'model ' + percentComplete.toFixed( 2 ) + '% downloaded' );
+        document.getElementsByClassName("progress")[0].textContent =  
+        percentComplete.toFixed( 2 ) + "%";
     }
 }
 
 const loader = new GLTFLoader();
-loader.load( "models/plane.glb", function ( gltf ) {
-    
-    scene.add( gltf.scene );
-}, undefined, function ( error ) {
-    console.log( error );
-});
+loader.load("models/plane.glb", (gltf) => scene.add(gltf.scene), 
+            onProgress, (error) => console.log(error));
 
 renderer.setClearColor( 0xffffff );
 camera.position.set(6,5,9);
@@ -38,12 +35,12 @@ camera.position.set(6,5,9);
 camera.rotateY(.7);
 camera.rotateX(-.3);
 
-const controls = new OrbitControls( camera, renderer.domElement );
+const controls = new OrbitControls(camera, renderer.domElement);
 controls.minDistance = 10;
 controls.maxDistance = 15;
-controls.addEventListener('change', animate);
+controls.addEventListener('change', render);
 
-window.addEventListener('resize',onWindowResize);
+window.addEventListener('resize', onWindowResize);
 
 function onWindowResize() {
 
@@ -54,10 +51,9 @@ function onWindowResize() {
 
 }
 
-function animate() {
-    requestAnimationFrame( animate );
-
+function render() {
+    requestAnimationFrame(render);
     renderer.render(scene, camera);
 }
 
-animate();
+render();
