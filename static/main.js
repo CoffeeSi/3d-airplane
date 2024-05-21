@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 const scene = new THREE.Scene();
@@ -12,42 +12,25 @@ scene.add( ambientLight );
 const pointLight = new THREE.PointLight( 0xffffff, 15 );
 camera.add( pointLight );
 
-let object;
-
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight, false);
 document.body.appendChild( renderer.domElement );
 
-function load_model() {
-    object.traverse( function (child) {
-        if ( child.isMesh ) child.material.map = texture;
-    });
-    scene.add(object);
-}
-
-const manager = new THREE.LoadingManager( load_model );
-
-const texture_loader = new THREE.TextureLoader( manager );
-const texture = texture_loader.load('image/fuselage_albd.png', animate);
-texture.colorSpace = THREE.SRGBColorSpace;
-
 function onProgress( xhr ) {
-
     if ( xhr.lengthComputable ) {
 
         const percentComplete = xhr.loaded / xhr.total * 100;
         console.log( 'model ' + percentComplete.toFixed( 2 ) + '% downloaded' );
-
     }
-
 }
 
-function onError() {}
-
-const loader = new OBJLoader( manager );
-loader.load('models/cessna-cj4-06.obj', function (obj) {
-    object = obj;
-}, onProgress, onError);
+const loader = new GLTFLoader();
+loader.load( "models/plane.glb", function ( gltf ) {
+    
+    scene.add( gltf.scene );
+}, undefined, function ( error ) {
+    console.log( error );
+});
 
 renderer.setClearColor( 0xffffff );
 camera.position.set(6,5,9);
