@@ -1,8 +1,13 @@
 {
+  "scripts": {
+    "start": "npx vite",
+    "deploy": "gh-pages -d 3d-airplane"
+  },
   "dependencies": {
     "three": "^0.164.1"
   },
   "devDependencies": {
+    "gh-pages": "^6.1.1",
     "vite": "^5.2.11"
   }
 }
