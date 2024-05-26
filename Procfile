@@ -1,1 +1,1 @@
-worker: npx vite
+worker: npx vite --host
