@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    
 }
 
 .image {
@@ -8,11 +9,12 @@ body {
 }
 
 .progress {
+    display: block;
+    position: absolute;
     text-align: center;
     top: 10%;
-    display: block;
     width: 100%;
-    position: absolute;
+    user-select: none;
     font-size: 64px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
