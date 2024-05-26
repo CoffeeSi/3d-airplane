@@ -3,6 +3,7 @@
     "start": "npx vite"
   },
   "dependencies": {
+    "stats.js": "^0.17.0",
     "three": "^0.164.1"
   },
   "devDependencies": {
