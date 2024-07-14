@@ -3,6 +3,10 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'stats.js';
 
+// document.addEventListener("click", (event) => {
+//     console.log(event.clientX, event.clientY);
+// });
+
 //Renderer
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight, false);
@@ -72,6 +76,11 @@ function mouseclick(event){
         const color = new THREE.Color(255, 0, 0);
         intersection[0].object.material.color.set(0xff0000);
         console.log(intersection);
+        console.log(event.clientX, event.clientY);
+
+        const block = document.body.getElementsByClassName("screen-block");
+        block.item(0).s;
+
         // selectedObject.material.color = null;
     }
 }
