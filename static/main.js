@@ -2,10 +2,9 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import Stats from 'stats.js';
+import info from './info.json' assert { type: 'json' };
 
-// document.addEventListener("click", (event) => {
-//     console.log(event.clientX, event.clientY);
-// });
+console.log(info['details']['engines_2']['name']);
 
 //Renderer
 const renderer = new THREE.WebGLRenderer()
@@ -45,23 +44,26 @@ controls.maxDistance = 15;
 const stats = new Stats();
 document.body.appendChild(stats.dom);
 
-function onProgress(xhr) {
-    if (xhr.lengthComputable) {
-        const percentComplete = xhr.loaded / xhr.total * 100;
-        document.getElementsByClassName("progress")[0].textContent =  
-        percentComplete.toFixed(2) + "%";
-    }
-}
+// function onProgress(xhr) {
+//     if (xhr.lengthComputable) {
+//         const percentComplete = xhr.loaded / xhr.total * 100;
+//         document.getElementsByClassName("progress")[0].textContent =  
+//         percentComplete.toFixed(2) + "%";
+//     }
+// }
 
 //Adding model to the scene
 const loader = new GLTFLoader();
 loader.load("models/plane.glb", (gltf) => scene.add(gltf.scene), 
-            onProgress, (error) => console.log(error));
+            null, (error) => console.log(error));
 
 //Raycaster configuring
 const raycaster = new THREE.Raycaster();
 
 document.addEventListener('mousedown', mouseclick);
+
+let fixed = 0;
+let elem = null;
 
 function mouseclick(event){
     console.log("Mouse was clicked");
@@ -71,19 +73,40 @@ function mouseclick(event){
     raycaster.setFromCamera(coords, camera);
 
     const intersection = raycaster.intersectObjects(scene.children);
-    
-    if (intersection.length > 0) {
-        const color = new THREE.Color(255, 0, 0);
-        intersection[0].object.material.color.set(0xff0000);
+
+    if (intersection.length > 0 && fixed == 0) {
+        const clear_color = new THREE.Color("white");
+        const color = new THREE.Color("red");
+        const selectedObject = intersection[0].object;
+        elem = selectedObject;
+        selectedObject.material.color = color;
         console.log(intersection);
         console.log(event.clientX, event.clientY);
+        console.log(selectedObject.name);
+        const floating_window = document.body.getElementsByClassName("floating-window")[0];
+        floating_window.style.display = 'block';
+        floating_window.style.left = event.clientX + "px";
+        floating_window.style.top = event.clientY + "px";
 
-        const block = document.body.getElementsByClassName("screen-block");
-        block.item(0).s;
+        const name_window = document.body.getElementsByClassName("name-window")[0];
+        name_window.innerText = info['details'][selectedObject.name]['name'];
 
-        // selectedObject.material.color = null;
+        const main_window = document.body.getElementsByClassName("main-window")[0];
+        main_window.innerText = info['details'][selectedObject.name]['desc'];
+        
+        const block = document.body.getElementsByClassName("screen-block")[0];
+        block.style.display = 'block';
+        fixed = 1;
+
+        const cross = document.body.getElementsByClassName("close-window")[0];
+        cross.addEventListener("click", () => {
+            block.style.display = 'none';
+            floating_window.style.display = 'none';
+            fixed = 0;
+            elem.material.color = clear_color;
+        });
     }
-}
+};
 
 //Render entire scene
 function render() {
