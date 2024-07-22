@@ -1,10 +1,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import Stats from 'stats.js';
 import info from './info.json' assert { type: 'json' };
-
-console.log(info['details']['engines_2']['name']);
 
 //Renderer
 const renderer = new THREE.WebGLRenderer()
@@ -41,17 +38,6 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.minDistance = 10;
 controls.maxDistance = 15;
 
-const stats = new Stats();
-document.body.appendChild(stats.dom);
-
-// function onProgress(xhr) {
-//     if (xhr.lengthComputable) {
-//         const percentComplete = xhr.loaded / xhr.total * 100;
-//         document.getElementsByClassName("progress")[0].textContent =  
-//         percentComplete.toFixed(2) + "%";
-//     }
-// }
-
 //Adding model to the scene
 const loader = new GLTFLoader();
 loader.load("models/plane.glb", (gltf) => scene.add(gltf.scene), 
@@ -65,8 +51,7 @@ document.addEventListener('mousedown', mouseclick);
 let fixed = 0;
 let elem = null;
 
-function mouseclick(event){
-    console.log("Mouse was clicked");
+function mouseclick(event) {
     const coords = new THREE.Vector2(
         (event.clientX / window.innerWidth)*2 - 1,
         (-(event.clientY / window.innerHeight)*2 + 1),);
@@ -81,23 +66,35 @@ function mouseclick(event){
         elem = selectedObject;
         selectedObject.material.color = color;
         console.log(intersection);
-        console.log(event.clientX, event.clientY);
-        console.log(selectedObject.name);
+
+        // Floating window setting
         const floating_window = document.body.getElementsByClassName("floating-window")[0];
         floating_window.style.display = 'block';
-        floating_window.style.left = event.clientX + "px";
-        floating_window.style.top = event.clientY + "px";
 
+        if (event.clientY + 420 > document.body.clientHeight) {
+            floating_window.style.top = event.clientY - (event.clientY + 420 - document.body.clientHeight) + "px";
+        } else {
+            floating_window.style.top = event.clientY + "px";
+        }
+        if (event.clientX + 440 > document.body.clientWidth) {
+            floating_window.style.left = event.clientX - (event.clientX + 440 - document.body.clientWidth) + "px";
+        } else {
+            floating_window.style.left = event.clientX + "px";
+        }
+
+        // Change floating window information
         const name_window = document.body.getElementsByClassName("name-window")[0];
         name_window.innerText = info['details'][selectedObject.name]['name'];
 
         const main_window = document.body.getElementsByClassName("main-window")[0];
         main_window.innerText = info['details'][selectedObject.name]['desc'];
         
+        // Block screen when floating window is shown
         const block = document.body.getElementsByClassName("screen-block")[0];
         block.style.display = 'block';
         fixed = 1;
 
+        // Close floating window
         const cross = document.body.getElementsByClassName("close-window")[0];
         cross.addEventListener("click", () => {
             block.style.display = 'none';
@@ -110,11 +107,7 @@ function mouseclick(event){
 
 //Render entire scene
 function render() {
-    stats.begin();
-
     renderer.render(scene, camera);
-
-    stats.end();
     requestAnimationFrame(render);
 
 }
