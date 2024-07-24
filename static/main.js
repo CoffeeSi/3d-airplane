@@ -88,6 +88,12 @@ function mouseclick(event) {
 
         const main_window = document.body.getElementsByClassName("main-window")[0];
         main_window.innerText = info['details'][selectedObject.name]['desc'];
+
+        if (info['details'][selectedObject.name]['img'] != null) {
+            const img_window = main_window.appendChild(document.createElement("img"));
+            img_window.className = "img-window";
+            img_window.src = info['details'][selectedObject.name]['img'];
+        }
         
         // Block screen when floating window is shown
         const block = document.body.getElementsByClassName("screen-block")[0];

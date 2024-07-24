@@ -14,6 +14,8 @@ body {
 }
 
 .floating-window {
+    font-family: "Montserrat";
+    /* font-family: 'Times New Roman', Times, serif; */
     display: none;
     position: fixed;
     width: 440px;
@@ -33,12 +35,13 @@ body {
 
 .name-window {
     align-self: flex-start;
-    height: auto;
+    height: 56px;
     flex-grow: 1;
-    font-size: 36px;
-    padding: 0 20px;
+    font-size: 32px;
+    font-weight: 600;
+    padding: 8px 24px;
     border-radius: 16px 0 0 0;
-    align-content: center;
+    align-items: center;
 }
 
 .close-window {
@@ -61,4 +64,10 @@ body {
     scroll-behavior: smooth;
     font-size: 24px;
     border-radius: 16px;
+}
+
+.img-window {
+    width: 100%;
+    border-radius: 16px;
+    margin-top: 32px;
 }
