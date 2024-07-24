@@ -1,1 +1,1 @@
-worker: npx vite --host --port 80
+worker: npx vite --host
