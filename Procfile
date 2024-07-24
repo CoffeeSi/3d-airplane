@@ -1,1 +1,1 @@
-worker: npx vite --host --port 6666
+web: npx vite --host --port $PORT
