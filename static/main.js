@@ -16,7 +16,7 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, 
     window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(6,5,9);
-camera.rotation.set(-.3,.7,0)
+camera.rotation.set(-.3,.7,0);
 
 //Window resize listener
 window.addEventListener('resize', onWindowResize);
@@ -115,7 +115,6 @@ function mouseclick(event) {
 function render() {
     renderer.render(scene, camera);
     requestAnimationFrame(render);
-
 }
 
 render();
